@@ -10,13 +10,19 @@ import { BsInfoCircle } from "react-icons/bs";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createIsssueSchema } from "@/app/validationSchemas";
 import { z } from "zod";
+import ErrorMessage from "@/app/components/ErrorMessage";
 
-type IssueForm = z.infer<typeof createIsssueSchema>
+type IssueForm = z.infer<typeof createIsssueSchema>;
 
 const NewIssuePage = () => {
   const router = useRouter();
-  const { register, control, handleSubmit, formState: {errors} } = useForm<IssueForm>({
-    resolver: zodResolver(createIsssueSchema)
+  const {
+    register,
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<IssueForm>({
+    resolver: zodResolver(createIsssueSchema),
   });
   const [error, setErrror] = useState("");
 
@@ -27,12 +33,11 @@ const NewIssuePage = () => {
           <Callout.Icon>
             <BsInfoCircle />
           </Callout.Icon>
-          <Callout.Text>
-            {error}
-          </Callout.Text>
+          <Callout.Text>{error}</Callout.Text>
         </Callout.Root>
       )}
-      <form className="space-y-3"
+      <form
+        className="space-y-3"
         onSubmit={handleSubmit(async (data) => {
           try {
             await axios.post("/api/issues", data);
@@ -43,11 +48,11 @@ const NewIssuePage = () => {
         })}
       >
         {/* New Issue */}
-        <TextField.Root 
+        <TextField.Root
           placeholder="Title"
           {...register("title")}
         ></TextField.Root>
-        {errors.title && <Text color="red" as="p">{errors.title.message}</Text>}
+        <ErrorMessage>{errors.title?.message}</ErrorMessage>
         <Controller
           name="description"
           control={control}
@@ -55,7 +60,7 @@ const NewIssuePage = () => {
             <SimpleMDE placeholder="Description…" {...field} />
           )}
         />
-        {errors.description && <Text color="red" as="p">{errors.description.message}</Text>}
+        <ErrorMessage>{errors.description?.message}</ErrorMessage>
 
         <Button>Submit New Issue</Button>
       </form>
