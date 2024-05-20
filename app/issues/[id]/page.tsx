@@ -4,7 +4,6 @@ import { notFound } from "next/navigation";
 import EditIssueButton from "./EditIssueButton";
 import IssueDetails from "./IssueDetails";
 import DeleteIssueButton from "./DeleteIssueButton";
-import delay from "delay";
 
 interface Props {
   params: { id: string };
@@ -17,7 +16,6 @@ const IssueDetailPage = async ({ params }: Props) => {
 
   if (!issue) notFound();
 
-  await delay(5000)
   return (
     <Grid columns={{ initial: "1", sm: "5" }} gap="5">
       <Box className="md:col-span-4">
