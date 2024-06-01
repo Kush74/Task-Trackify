@@ -5,6 +5,7 @@ import Pagination from "../components/Pagination";
 import IssueTable, { IssueQuery, columnNames } from "./IssueTable";
 import { Flex } from "@radix-ui/themes";
 import { Metadata } from "next";
+import { Suspense } from "react";
 
 interface Props {
   searchParams: IssueQuery;
@@ -34,22 +35,23 @@ const IssuesPage = async ({ searchParams }: Props) => {
 
   const issueCount = await prisma.issue.count({ where });
   return (
-    <Flex direction='column' gap='3'>
+    <Flex direction="column" gap="3">
       <IssuesToolbar />
       <IssueTable searchParams={searchParams} issues={issues} />
-      <Pagination
-        pageSize={pageSize}
-        currentPage={page}
-        itemCount={issueCount}
-      />
+      <Suspense>
+        <Pagination
+          pageSize={pageSize}
+          currentPage={page}
+          itemCount={issueCount}
+        />
+      </Suspense>
     </Flex>
   );
 };
 
-
 export const metadata: Metadata = {
-  title: 'Task Trackify - Issue List',
-  description: 'View all project issues.'
-}
+  title: "Task Trackify - Issue List",
+  description: "View all project issues.",
+};
 
 export default IssuesPage;
