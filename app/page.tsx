@@ -23,6 +23,8 @@ export default async function Home () {
   );
 }
 
+export const fetchCache = 'force-no-store';
+
 export const metadata: Metadata = {
   title: 'Task Trackify - Dashboard',
   description: 'View a summary of project issues.'
